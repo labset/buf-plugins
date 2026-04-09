@@ -1,0 +1,16 @@
+version: v2
+modules:
+  - path: protos
+
+plugins:
+  - plugin: api-lint-plugin
+
+lint:
+  use:
+    - FILE_NAME_CONVENTION
+    - UPDATE_REQUEST_FIELD_MASK
+    - REPEATED_FIELD_VALIDATION
+
+breaking:
+  use:
+    - FILE

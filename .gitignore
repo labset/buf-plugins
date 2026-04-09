@@ -1,0 +1,7 @@
+.idea/
+.claude/settings.local.json
+
+dist/
+out/
+
+.env

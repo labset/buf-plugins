@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package team.v1;
+
+import "google/protobuf/field_mask.proto";
+import "team/v1/enums.proto";
+import "team/v1/models.proto";
+import "user/v1/refs.proto";
+
+option go_package = "team/v1;teamV1";
+
+service TeamService {
+  rpc CreateTeam(CreateTeamRequest) returns (CreateTeamResponse);
+  rpc GetTeam(GetTeamRequest) returns (GetTeamResponse);
+  rpc UpdateTeam(UpdateTeamRequest) returns (UpdateTeamResponse);
+  rpc DeleteTeam(DeleteTeamRequest) returns (DeleteTeamResponse);
+  rpc ListTeams(ListTeamsRequest) returns (ListTeamsResponse);
+  rpc AddTeamMember(AddTeamMemberRequest) returns (AddTeamMemberResponse);
+  rpc AddTeamMembers(AddTeamMembersRequest) returns (AddTeamMembersResponse);
+  rpc RemoveTeamMember(RemoveTeamMemberRequest) returns (RemoveTeamMemberResponse);
+}
+
+message CreateTeamRequest {
+  string name = 1;
+  string description = 2;
+}
+
+message CreateTeamResponse {
+  Team team = 1;
+}
+
+message GetTeamRequest {
+  string id = 1;
+}
+
+message GetTeamResponse {
+  Team team = 1;
+}
+
+message TeamPatch {
+  string name = 1;
+  string description = 2;
+  repeated TeamMemberSpec members = 3;
+}
+
+message UpdateTeamRequest {
+  string id = 1;
+  TeamPatch patch = 2;
+  google.protobuf.FieldMask update_mask = 3;
+}
+
+message UpdateTeamResponse {
+  Team team = 1;
+}
+
+message DeleteTeamRequest {
+  string id = 1;
+}
+
+message DeleteTeamResponse {}
+
+message ListTeamsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message ListTeamsResponse {
+  repeated Team teams = 1;
+  string next_page_token = 2;
+}
+
+message AddTeamMemberRequest {
+  string team_id = 1;
+  user.v1.UserRef user = 2;
+  TeamMemberRole role = 3;
+}
+
+message AddTeamMemberResponse {
+  TeamMember member = 1;
+}
+
+message TeamMemberSpec {
+  user.v1.UserRef user = 1;
+  TeamMemberRole role = 2;
+}
+
+message AddTeamMembersRequest {
+  string team_id = 1;
+  repeated TeamMemberSpec members = 2;
+}
+
+message AddTeamMembersResponse {
+  repeated TeamMember members = 1;
+}
+
+message RemoveTeamMemberRequest {
+  string team_id = 1;
+  user.v1.UserRef user = 2;
+}
+
+message RemoveTeamMemberResponse {}
