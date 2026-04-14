@@ -1,9 +1,25 @@
 [tools]
 go = "1.26.2"
 buf = "1.67.0"
+golangci-lint = "2.11.4"
+goreleaser = "2.12.7"
+
+[tasks.deps]
+description = "Download Go module dependencies"
+run = "go mod download"
+
+[tasks.lint]
+description = "Run golangci-lint on the codebase"
+run = "golangci-lint run"
+
+[tasks."lint-fix"]
+description = "Run golangci-lint on the codebase and fix issues"
+run = "golangci-lint run --fix"
 
 [tasks.build]
-run = "go build -o dist/ ./cmd/..."
+description = "Build the project using goreleaser"
+run = "goreleaser build --clean --snapshot"
 
-[env]
-_.path = ["{{config_root}}/dist"]
+[tasks.install]
+description = "Install the plugin locally"
+run = "go install ./cmd/..."

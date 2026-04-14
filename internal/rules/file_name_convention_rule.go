@@ -22,12 +22,18 @@ func FileNameConventionRule() *check.RuleSpec {
 	}
 }
 
-func handleFileNameConvention(_ context.Context, responseWriter check.ResponseWriter, request check.Request) error {
+func handleFileNameConvention(
+	_ context.Context,
+	responseWriter check.ResponseWriter,
+	request check.Request,
+) error {
 	for _, fileDescriptor := range request.FileDescriptors() {
 		if fileDescriptor.IsImport() {
 			continue
 		}
+
 		filePath := fileDescriptor.ProtoreflectFileDescriptor().Path()
+
 		fileName := filePath[strings.LastIndex(filePath, "/")+1:]
 		if !isValidFileName(fileName) {
 			responseWriter.AddAnnotation(
@@ -39,6 +45,7 @@ func handleFileNameConvention(_ context.Context, responseWriter check.ResponseWr
 			)
 		}
 	}
+
 	return nil
 }
 
@@ -47,5 +54,6 @@ func isValidFileName(name string) bool {
 	case "enums.proto", "models.proto", "refs.proto":
 		return true
 	}
+
 	return serviceFilePattern.MatchString(name)
 }

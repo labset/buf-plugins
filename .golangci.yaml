@@ -1,0 +1,47 @@
+version: "2"
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+    - golines
+
+linters:
+  enable:
+    - copyloopvar
+    - err113
+    - errorlint
+    - exptostd
+    - depguard
+    - fatcontext
+    - gocritic
+    - govet
+    - iface
+    - importas
+    - intrange
+    - mirror
+    - misspell
+    - nakedret
+    - nlreturn
+    - nolintlint
+    - perfsprint
+    - protogetter
+    - sloglint
+    - staticcheck
+    - tagalign
+    - testifylint
+    - usestdlibvars
+    - usetesting
+    - whitespace
+    - wsl_v5
+
+  settings:
+    depguard:
+      rules:
+        main:
+          allow:
+            - $gostd
+            - github.com/labset/buf-plugins
+            - buf.build/go
+            - buf.build/gen
+            - google.golang.org/protobuf
