@@ -55,13 +55,12 @@ Then run `buf lint` as usual.
 
 ```
 .
-├── plugin/         # Custom buf lint plugins (Go)
-│   ├── cmd/
-│   │   └── api-lint-plugin/        # Plugin for API lint rules
-│   ├── internal/
-│   │   └── api/                    # Lint rule implementations
-│   └── dist/                       # Compiled plugin binaries
-└── schema/         # Protobuf schema workspace used to exercise the plugins
+├── cmd/
+│   └── api-lint-plugin/            # Plugin entrypoint
+├── internal/
+│   └── rules/                      # Lint rule implementations
+├── dist/                           # Compiled plugin binaries
+└── schema/                         # Protobuf schema workspace used to exercise the plugins
     └── protos/
         ├── user/v1/                # User API
         │   ├── enums.proto
@@ -95,11 +94,10 @@ This installs Go and Buf, and puts the compiled plugin binaries from `plugin/dis
 ### Build the plugin
 
 ```bash
-cd plugin
 mise run build
 ```
 
-Binaries are output to `plugin/dist/`.
+Binaries are output to `dist/`.
 
 ### Lint the sample schema
 
@@ -108,4 +106,4 @@ cd schema
 mise run lint
 ```
 
-This runs `buf lint` against the `schema/` workspace using the locally built `api-lint-plugin`, which is the quickest way to iterate on rule changes.
+This runs `buf lint` against the `schema/` workspace using the locally built `api-lint-plugin` from `dist/`, which is the quickest way to iterate on rule changes.
