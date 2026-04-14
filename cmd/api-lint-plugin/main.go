@@ -8,7 +8,8 @@ import (
 func main() {
 	check.Main(&check.Spec{
 		Rules: []*check.RuleSpec{
-			rules.FileNameRule(),
+			rules.FileNameConventionRule(),
+			rules.RepeatedFieldValidationRule(),
 		},
 	})
 }

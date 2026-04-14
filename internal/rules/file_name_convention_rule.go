@@ -8,13 +8,13 @@ import (
 	"buf.build/go/bufplugin/check"
 )
 
-const fileNameRuleID = "FILE_NAME_RULE"
+const fileNameConventionRuleID = "FILE_NAME_CONVENTION"
 
 var serviceFilePattern = regexp.MustCompile(`^service_[a-z][a-z0-9_]*\.proto$`)
 
-func FileNameRule() *check.RuleSpec {
+func FileNameConventionRule() *check.RuleSpec {
 	return &check.RuleSpec{
-		ID:      fileNameRuleID,
+		ID:      fileNameConventionRuleID,
 		Default: true,
 		Purpose: "Ensures proto files follow naming conventions: enums.proto, models.proto, refs.proto, or service_<name>.proto",
 		Type:    check.RuleTypeLint,
