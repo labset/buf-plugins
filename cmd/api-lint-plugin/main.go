@@ -10,6 +10,7 @@ func main() {
 		Rules: []*check.RuleSpec{
 			rules.FileNameConventionRule(),
 			rules.RepeatedFieldValidationRule(),
+			rules.PatchRequestFieldMaskRule(),
 		},
 	})
 }
