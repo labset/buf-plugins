@@ -5,5 +5,8 @@ buf = "1.67.0"
 [tasks.build]
 run = "go build -o dist/ ./cmd/..."
 
+[tasks.lint]
+run = "go vet ./..."
+
 [env]
 _.path = ["{{config_root}}/dist"]
