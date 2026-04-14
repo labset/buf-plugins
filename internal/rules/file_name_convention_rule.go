@@ -1,4 +1,4 @@
-package api
+package rules
 
 import (
 	"context"
@@ -22,16 +22,12 @@ func FileNameConventionRule() *check.RuleSpec {
 	}
 }
 
-func handleFileNameConvention(
-	_ context.Context,
-	responseWriter check.ResponseWriter,
-	request check.Request,
-) error {
+func handleFileNameConvention(_ context.Context, responseWriter check.ResponseWriter, request check.Request) error {
 	for _, fileDescriptor := range request.FileDescriptors() {
 		if fileDescriptor.IsImport() {
 			continue
 		}
-		filePath := string(fileDescriptor.ProtoreflectFileDescriptor().Path())
+		filePath := fileDescriptor.ProtoreflectFileDescriptor().Path()
 		fileName := filePath[strings.LastIndex(filePath, "/")+1:]
 		if !isValidFileName(fileName) {
 			responseWriter.AddAnnotation(

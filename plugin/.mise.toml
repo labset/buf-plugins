@@ -1,2 +1,0 @@
-[tasks.build]
-run = "go build -o dist/ ./cmd/..."

@@ -9,7 +9,7 @@ Custom [Buf](https://buf.build) lint plugins, written in Go with the [bufplugin 
 Install the plugin with `go install`:
 
 ```bash
-go install github.com/viqueen/buf-plugins/plugin/cmd/api-lint-plugin@latest
+go install github.com/labset/buf-plugins/cmd/api-lint-plugin@latest
 ```
 
 This drops the binary in `$(go env GOBIN)` (or `$(go env GOPATH)/bin`). Make sure that directory is on your `PATH` so `buf` can discover the plugin.
@@ -29,7 +29,7 @@ plugins:
 lint:
   use:
     - FILE_NAME_CONVENTION
-    - UPDATE_REQUEST_FIELD_MASK
+    - PATCH_REQUEST_FIELD_MASK
     - REPEATED_FIELD_VALIDATION
 ```
 
@@ -45,23 +45,22 @@ Then run `buf lint` as usual.
 
 #### `api-lint-plugin`
 
-| Rule ID | Default | Description |
-|---|---|---|
-| `FILE_NAME_CONVENTION` | yes | Proto files must be named `enums.proto`, `models.proto`, `refs.proto`, or `service_<name>.proto` |
-| `UPDATE_REQUEST_FIELD_MASK` | yes | `UpdateXxxRequest` messages must have a `google.protobuf.FieldMask update_mask` field to support partial updates |
+| Rule ID                     | Default | Description                                                                                                                           |
+|-----------------------------|---|---------------------------------------------------------------------------------------------------------------------------------------|
+| `FILE_NAME_CONVENTION`      | yes | Proto files must be named `enums.proto`, `models.proto`, `refs.proto`, or `service_<name>.proto`                                      |
+| `PATCH_REQUEST_FIELD_MASK`  | yes | `PatchXxxRequest` messages must have a `google.protobuf.FieldMask patch_mask` field to support partial updates                        |
 | `REPEATED_FIELD_VALIDATION` | yes | Repeated fields in request messages (including nested messages) must have a `max_items` constraint to prevent unbounded input attacks |
 
 ## Repository structure
 
 ```
 .
-├── plugin/         # Custom buf lint plugins (Go)
-│   ├── cmd/
-│   │   └── api-lint-plugin/        # Plugin for API lint rules
-│   ├── internal/
-│   │   └── api/                    # Lint rule implementations
-│   └── dist/                       # Compiled plugin binaries
-└── schema/         # Protobuf schema workspace used to exercise the plugins
+├── cmd/
+│   └── api-lint-plugin/            # Plugin entrypoint
+├── internal/
+│   └── rules/                      # Lint rule implementations
+├── dist/                           # Compiled plugin binaries
+└── schema/                         # Protobuf schema workspace used to exercise the plugins
     └── protos/
         ├── user/v1/                # User API
         │   ├── enums.proto
@@ -95,11 +94,10 @@ This installs Go and Buf, and puts the compiled plugin binaries from `plugin/dis
 ### Build the plugin
 
 ```bash
-cd plugin
 mise run build
 ```
 
-Binaries are output to `plugin/dist/`.
+Binaries are output to `dist/`.
 
 ### Lint the sample schema
 
@@ -108,4 +106,4 @@ cd schema
 mise run lint
 ```
 
-This runs `buf lint` against the `schema/` workspace using the locally built `api-lint-plugin`, which is the quickest way to iterate on rule changes.
+This runs `buf lint` against the `schema/` workspace using the locally built `api-lint-plugin` from `dist/`, which is the quickest way to iterate on rule changes.

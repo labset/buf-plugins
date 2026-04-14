@@ -1,4 +1,4 @@
-package api
+package rules
 
 import (
 	"context"
@@ -8,19 +8,19 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-const updateRequestFieldMaskRuleID = "UPDATE_REQUEST_FIELD_MASK"
+const patchRequestFieldMaskRuleID = "PATCH_REQUEST_FIELD_MASK"
 
-func UpdateRequestFieldMaskRule() *check.RuleSpec {
+func PatchRequestFieldMaskRule() *check.RuleSpec {
 	return &check.RuleSpec{
-		ID:      updateRequestFieldMaskRuleID,
+		ID:      patchRequestFieldMaskRuleID,
 		Default: true,
-		Purpose: "Ensures UpdateXxxRequest messages have a google.protobuf.FieldMask update_mask field to support partial updates.",
+		Purpose: "Ensures PatchXxxRequest messages have a google.protobuf.FieldMask update_mask field to support partial updates.",
 		Type:    check.RuleTypeLint,
-		Handler: check.RuleHandlerFunc(handleUpdateRequestFieldMask),
+		Handler: check.RuleHandlerFunc(handlePatchRequestFieldMask),
 	}
 }
 
-func handleUpdateRequestFieldMask(
+func handlePatchRequestFieldMask(
 	_ context.Context,
 	responseWriter check.ResponseWriter,
 	request check.Request,
@@ -33,14 +33,14 @@ func handleUpdateRequestFieldMask(
 		for i := range messages.Len() {
 			message := messages.Get(i)
 			name := string(message.Name())
-			if !strings.HasPrefix(name, "Update") || !strings.HasSuffix(name, "Request") {
+			if !strings.HasPrefix(name, "Patch") || !strings.HasSuffix(name, "Request") {
 				continue
 			}
 			if !hasFieldMaskField(message) {
 				responseWriter.AddAnnotation(
 					check.WithDescriptor(message),
 					check.WithMessagef(
-						"update request message %q must have a google.protobuf.FieldMask update_mask field to support partial updates",
+						"patch request message %q must have a google.protobuf.FieldMask update_mask field to support partial updates",
 						message.Name(),
 					),
 				)
@@ -54,7 +54,7 @@ func hasFieldMaskField(message protoreflect.MessageDescriptor) bool {
 	fields := message.Fields()
 	for i := range fields.Len() {
 		field := fields.Get(i)
-		if field.Name() != "update_mask" {
+		if field.Name() != "patch_mask" {
 			continue
 		}
 		return field.Kind() == protoreflect.MessageKind &&
