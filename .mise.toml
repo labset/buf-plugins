@@ -12,6 +12,10 @@ run = "go mod download"
 description = "Run golangci-lint on the codebase"
 run = "golangci-lint run"
 
+[tasks."lint-fix"]
+description = "Run golangci-lint on the codebase and fix issues"
+run = "golangci-lint run --fix"
+
 [tasks.build]
 description = "Build the project using goreleaser"
 run = "goreleaser build --clean --snapshot"

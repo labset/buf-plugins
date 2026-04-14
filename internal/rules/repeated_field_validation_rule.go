@@ -31,16 +31,19 @@ func handleRepeatedFieldValidation(
 		if fileDescriptor.IsImport() {
 			continue
 		}
+
 		messages := fileDescriptor.ProtoreflectFileDescriptor().Messages()
 		for i := range messages.Len() {
 			message := messages.Get(i)
 			if !strings.HasSuffix(string(message.Name()), "Request") {
 				continue
 			}
+
 			visited := make(map[protoreflect.FullName]bool)
 			checkRepeatedFields(responseWriter, message, visited)
 		}
 	}
+
 	return nil
 }
 
@@ -52,6 +55,7 @@ func checkRepeatedFields(
 	if visited[message.FullName()] {
 		return
 	}
+
 	visited[message.FullName()] = true
 
 	fields := message.Fields()
@@ -79,14 +83,18 @@ func hasMaxItemsConstraint(field protoreflect.FieldDescriptor) bool {
 	if options == nil {
 		return false
 	}
+
 	ext := proto.GetExtension(options, validatepb.E_Field)
+
 	fieldRules, ok := ext.(*validatepb.FieldRules)
 	if !ok || fieldRules == nil {
 		return false
 	}
+
 	repeated := fieldRules.GetRepeated()
 	if repeated == nil {
 		return false
 	}
+
 	return repeated.HasMaxItems()
 }

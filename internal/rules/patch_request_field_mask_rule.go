@@ -29,13 +29,16 @@ func handlePatchRequestFieldMask(
 		if fileDescriptor.IsImport() {
 			continue
 		}
+
 		messages := fileDescriptor.ProtoreflectFileDescriptor().Messages()
 		for i := range messages.Len() {
 			message := messages.Get(i)
+
 			name := string(message.Name())
 			if !strings.HasPrefix(name, "Patch") || !strings.HasSuffix(name, "Request") {
 				continue
 			}
+
 			if !hasFieldMaskField(message) {
 				responseWriter.AddAnnotation(
 					check.WithDescriptor(message),
@@ -47,6 +50,7 @@ func handlePatchRequestFieldMask(
 			}
 		}
 	}
+
 	return nil
 }
 
@@ -57,8 +61,10 @@ func hasFieldMaskField(message protoreflect.MessageDescriptor) bool {
 		if field.Name() != "patch_mask" {
 			continue
 		}
+
 		return field.Kind() == protoreflect.MessageKind &&
 			field.Message().FullName() == "google.protobuf.FieldMask"
 	}
+
 	return false
 }
