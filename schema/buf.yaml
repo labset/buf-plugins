@@ -8,7 +8,7 @@ plugins:
 lint:
   use:
     - FILE_NAME_CONVENTION
-    - UPDATE_REQUEST_FIELD_MASK
+    - PATCH_REQUEST_FIELD_MASK
     - REPEATED_FIELD_VALIDATION
 
 breaking:

@@ -16,18 +16,18 @@ func FileNameConventionRule() *check.RuleSpec {
 	return &check.RuleSpec{
 		ID:      fileNameConventionRuleID,
 		Default: true,
-		Purpose: "Ensures proto files follow naming conventions: enums.proto, models.proto, refs.proto, or service_<name>.proto",
+		Purpose: "Ensures proto files follow naming conventions: enums.proto, models.proto, refs.proto, or service_<name>.proto.",
 		Type:    check.RuleTypeLint,
-		Handler: check.RuleHandlerFunc(handleFileName),
+		Handler: check.RuleHandlerFunc(handleFileNameConvention),
 	}
 }
 
-func handleFileName(_ context.Context, responseWriter check.ResponseWriter, request check.Request) error {
+func handleFileNameConvention(_ context.Context, responseWriter check.ResponseWriter, request check.Request) error {
 	for _, fileDescriptor := range request.FileDescriptors() {
 		if fileDescriptor.IsImport() {
 			continue
 		}
-		filePath := string(fileDescriptor.ProtoreflectFileDescriptor().Path())
+		filePath := fileDescriptor.ProtoreflectFileDescriptor().Path()
 		fileName := filePath[strings.LastIndex(filePath, "/")+1:]
 		if !isValidFileName(fileName) {
 			responseWriter.AddAnnotation(
