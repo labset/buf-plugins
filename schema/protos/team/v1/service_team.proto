@@ -12,11 +12,17 @@ option go_package = "team/v1;teamV1";
 service TeamService {
   rpc CreateTeam(CreateTeamRequest) returns (CreateTeamResponse);
   rpc GetTeam(GetTeamRequest) returns (GetTeamResponse);
+
   rpc UpdateTeam(UpdateTeamRequest) returns (UpdateTeamResponse);
+  rpc PatchTeam(PatchTeamRequest) returns (PatchTeamResponse);
+
   rpc DeleteTeam(DeleteTeamRequest) returns (DeleteTeamResponse);
+
   rpc ListTeams(ListTeamsRequest) returns (ListTeamsResponse);
+
   rpc AddTeamMember(AddTeamMemberRequest) returns (AddTeamMemberResponse);
   rpc AddTeamMembers(AddTeamMembersRequest) returns (AddTeamMembersResponse);
+
   rpc RemoveTeamMember(RemoveTeamMemberRequest) returns (RemoveTeamMemberResponse);
 }
 
@@ -50,6 +56,15 @@ message UpdateTeamRequest {
 }
 
 message UpdateTeamResponse {
+  Team team = 1;
+}
+
+message PatchTeamRequest {
+  string id = 1;
+  string name = 2;
+}
+
+message PatchTeamResponse {
   Team team = 1;
 }
 
