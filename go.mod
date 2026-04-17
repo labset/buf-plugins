@@ -3,7 +3,7 @@ module github.com/labset/buf-plugins
 go 1.26.2
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260209202127-80ab13bee0bf.1
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260415201107-50325440f8f2.1
 	buf.build/go/bufplugin v0.10.0
 	google.golang.org/protobuf v1.36.11
 )
