@@ -2,7 +2,7 @@
 go = "1.26.2"
 buf = "1.68.4"
 golangci-lint = "2.11.4"
-goreleaser = "2.12.7"
+goreleaser = "2.15.4"
 
 [tasks.deps]
 description = "Download Go module dependencies"
