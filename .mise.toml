@@ -1,6 +1,6 @@
 [tools]
 go = "1.26.2"
-buf = "1.68.4"
+buf = "1.69.0"
 golangci-lint = "2.11.4"
 goreleaser = "2.12.7"
 
